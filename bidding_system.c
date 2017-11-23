@@ -173,6 +173,18 @@ void scoreBoard_rankPlayer(struct ScoreBoard *scoreBoard) {
 				ranking[j-1] = temp;
 			}
 		}
+
+	int rank;
+	for (int i = 0; i < scoreBoard->playerCount; i++) {
+		if (i = 0) {
+			rank = 1;
+		} else if (ranking[i]->score == ranking[i-1]->score) {
+			// rank remains the same
+		} else {
+			rank = i+1;
+		}
+		ranking[i]->rank = rank;
+	}
 }
 
 void scoreBoard_print(struct ScoreBoard *scoreBoard) {
