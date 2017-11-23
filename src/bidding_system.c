@@ -50,6 +50,7 @@ void system_argParse(int argc, char const *argv[], int *host_num, int *player_nu
 	}
 	if (*player_num < 4 || *player_num > 20) {
 		perror("[invalid arguments] player number shall be an interger between 4 to 20\n");
+		exit(0);
 	}
 }
 
@@ -119,7 +120,7 @@ void hostPool_receiveTask(struct HostPool *hostPool, int task[]) {
 	sprintf(buffer, "%d %d %d %d\n", task[0], task[1], task[2], task[3]);
 
 	uint16_t probe = 1;
-	for (int i = 0; i < hostPool->hostCount; i++, probe << 1) {
+	for (int i = 0; i < hostPool->hostCount; i++, probe = probe << 1) {
 		if ((hostPool->available & probe) > 0) {
 			write(hostPool->host[i].pipefd[PIPE_WR], buffer, strlen(buffer)+1);
 			return;
@@ -176,7 +177,7 @@ void scoreBoard_rankPlayer(struct ScoreBoard *scoreBoard) {
 
 	int rank;
 	for (int i = 0; i < scoreBoard->playerCount; i++) {
-		if (i = 0) {
+		if (i == 0) {
 			rank = 1;
 		} else if (ranking[i]->score == ranking[i-1]->score) {
 			// rank remains the same
@@ -189,6 +190,6 @@ void scoreBoard_rankPlayer(struct ScoreBoard *scoreBoard) {
 
 void scoreBoard_print(struct ScoreBoard *scoreBoard) {
 	for(int i = 0; i < scoreBoard->playerCount; i++) {
-		printf("%d %d\n", i+1, scoreBoard->player[i].rank);
+		printf("%d\t%d\t%d\n", i+1, scoreBoard->player[i].rank, scoreBoard->player[i].score);
 	}
 }
